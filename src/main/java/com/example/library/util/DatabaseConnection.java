@@ -6,7 +6,8 @@ import java.sql.SQLException;
 
 public final class DatabaseConnection {
 
-    //PostgreSQLへの接続先。ホスト名 : localhost ポート番号 : 5432 のPostgreSQLに接続し、DB名 library_booking というDBに接続する。
+    //PostgreSQLへの接続先。ホスト名 : localhost ポート番号 : 5432 のPostgreSQLに接続し、
+    // DB名 library_booking というDBに接続する。
     private static final String URL =
             "jdbc:postgresql://localhost:5432/library_booking";
 
@@ -22,6 +23,13 @@ public final class DatabaseConnection {
 
     public static Connection getConnection()
             throws SQLException {
+        try {
+        // PostgreSQL JDBCドライバを明示的にロードする。(これがないと、なぜか500エラーになった)
+            Class.forName("org.postgresql.Driver");
+        } catch (ClassNotFoundException exception) {
+            throw new IllegalStateException("PostgreSQL JDBC driver was not found.", exception);
+        }
+
         //JDBCドライバを使ってPostgreSQLに接続する。接続先のURL、ユーザー名、パスワードを指定する。
         return DriverManager.getConnection(
             URL,
