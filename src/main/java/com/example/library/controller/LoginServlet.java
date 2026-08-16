@@ -17,6 +17,7 @@ public class LoginServlet extends HttpServlet {
 
     private final AuthService authService = new AuthService();
 
+    // ブラウザのアドレスバーに /login を入力すると、doGetメソッドが実行され、ログイン画面(login.jsp)を表示する
     @Override
     protected void doGet(
             HttpServletRequest request,
@@ -26,6 +27,7 @@ public class LoginServlet extends HttpServlet {
         request.getRequestDispatcher("/WEB-INF/views/login.jsp").forward(request, response);
     }
 
+    // ログイン画面(login.jsp)にて「ログイン」ボタンを押すと、doPostメソッドが実行される。
     @Override
     protected void doPost(
             HttpServletRequest request,
@@ -37,10 +39,12 @@ public class LoginServlet extends HttpServlet {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
 
+        // AuthService.javaのauthenticateメソッドを使って、ユーザ名とパスワードが正しいかどうかを確認する。
         authService.authenticate(username, password).ifPresentOrElse(user -> {
             HttpSession session = request.getSession(true);
             session.setAttribute("loginUser", user);
 
+            //認証に成功したら、ブラウザに、/books というURLにリダイレクトするように指示する。
             try {
                 response.sendRedirect(request.getContextPath() + "/books");
             } catch (IOException exception) {
