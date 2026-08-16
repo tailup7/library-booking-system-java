@@ -3,6 +3,7 @@
 
 # Directory Structure
 
+```
 library-booking-system-java/
 │
 ├─ pom.xml
@@ -43,3 +44,4 @@ library-booking-system-java/
    │
    └─ test/
       └─ java/
+```
