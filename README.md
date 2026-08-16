@@ -45,3 +45,38 @@ library-booking-system-java/
    └─ test/
       └─ java/
 ```
+
+## Database ER Structure
+
+`library-booking` database.
+
+```
+users
+ ├─ id PK
+ ├─ username
+ ├─ password_hash
+ ├─ display_name
+ └─ role
+        │
+        │ 1
+        │
+        │ N
+reservations
+ ├─ id PK
+ ├─ user_id FK
+ ├─ book_id FK
+ ├─ reserved_at
+ └─ status
+        │
+        │ N
+        │
+        │ 1
+books
+ ├─ id PK
+ ├─ isbn
+ ├─ title
+ ├─ author
+ ├─ publisher
+ ├─ publication_year
+ └─ available
+```
