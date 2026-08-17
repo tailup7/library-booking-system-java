@@ -16,9 +16,20 @@
 
 <h1>図書一覧</h1>
 
+<form method="get" action="<%= request.getContextPath() %>/books">
+    <label for="keyword">検索</label>
+    <input type="text" id="keyword" name="keyword"
+           value="<%= request.getAttribute("keyword") != null ? request.getAttribute("keyword") : "" %>">
+    <button type="submit">検索</button>
+</form>
+
 <%
     List<Book> books =
         (List<Book>) request.getAttribute("books");
+    Integer currentPage = (Integer) request.getAttribute("currentPage");
+    Integer totalPages = (Integer) request.getAttribute("totalPages");
+    Boolean hasNextPage = (Boolean) request.getAttribute("hasNextPage");
+    String keyword = request.getAttribute("keyword") == null ? "" : (String) request.getAttribute("keyword");
 %>
 
 <table border="1">
@@ -61,6 +72,32 @@
     </tbody>
 
 </table>
+
+<%
+    if (currentPage != null && currentPage > 1) {
+        String prevPageUrl = request.getContextPath() + "/books?page=" + (currentPage - 1);
+        if (keyword != null && !keyword.isEmpty()) {
+            prevPageUrl += "&keyword=" + java.net.URLEncoder.encode(keyword, "UTF-8");
+        }
+%>
+    <p>
+        <a href="<%= prevPageUrl %>">前ページへ</a>
+    </p>
+<%
+    }
+
+    if (Boolean.TRUE.equals(hasNextPage)) {
+        String nextPageUrl = request.getContextPath() + "/books?page=" + (currentPage + 1);
+        if (keyword != null && !keyword.isEmpty()) {
+            nextPageUrl += "&keyword=" + java.net.URLEncoder.encode(keyword, "UTF-8");
+        }
+%>
+    <p>
+        <a href="<%= nextPageUrl %>">次ページへ</a>
+    </p>
+<%
+    }
+%>
 
 </body>
 
